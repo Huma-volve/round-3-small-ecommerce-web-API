@@ -36,4 +36,9 @@ class Product extends Model
     {
         return $this->hasMany(ProductDetail::class);
     }
+
+    public function shippingInformation(): HasMany
+    {
+        return $this->hasMany(ShippingInformation::class);
+    }
 }
