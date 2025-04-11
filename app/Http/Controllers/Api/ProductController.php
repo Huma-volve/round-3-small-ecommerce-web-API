@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ProductResource;
 use App\Models\Products\Product;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
@@ -13,20 +14,30 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
-        // Get all products filtred by category
+        // Filters
         $category = $request->get('category');
-        $subCategory = $request->get('subCategory');
+        $subCategory = $request->get('subcategory');
 
+        // Products with filters
         $products = Product::with(['categories', 'subcategories'])
-            ->whereHas('categories', function ($query) use ($category) {
-                $query->where('name', $category);
+            ->when($category, function ($query) use ($category) {
+                $query->whereHas('categories', function ($q) use ($category) {
+                    $q->where('name', $category);
+                });
             })
-            ->whereHas('subcategories', function ($query) use ($subCategory) {
-                $query->where('name', $subCategory);
-            })->get();
+            ->when($subCategory, function ($query) use ($subCategory) {
+                $query->whereHas('subcategories', function ($q) use ($subCategory) {
+                    $q->where('name', $subCategory);
+                });
+            })
+            ->get();
 
-        return $this->successResponse($products, "Fetched successfully");
+        return $this->successResponse(
+            ProductResource::collection($products),
+            "Fetched successfully"
+        );
     }
+
 
     public function show($id)
     {
@@ -36,6 +47,9 @@ class ProductController extends Controller
             return $this->errorResponse("Product not found", 404);
         }
 
-        return $this->successResponse($product, "Fetched successfully");
+        return $this->successResponse(
+            new ProductResource($product),
+            "Fetched successfully"
+        );
     }
 }
