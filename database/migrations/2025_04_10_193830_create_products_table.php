@@ -13,8 +13,6 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category_id')->constrained('categories')->cascadeOnUpdate()->cascadeOnDelete();
-            $table->foreignId('subcategory_id')->constrained('subcategories')->cascadeOnUpdate()->cascadeOnDelete();
             $table->string("title");
             $table->decimal('price', 8, 2);
             $table->string("thumbnail");
