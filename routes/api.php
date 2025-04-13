@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Api\TestimonialsController;
 use Illuminate\Support\Facades\Route;
 
@@ -11,3 +12,6 @@ Route::get('products/{id}', [ProductController::class, 'show'])->name('products.
 
 // Testimonials API
 Route::apiResource('testimonials', TestimonialsController::class);
+
+// Settings API
+Route::apiResource('settings', SettingController::class);
