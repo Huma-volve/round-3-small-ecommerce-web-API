@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\FaqController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Api\TestimonialsController;
@@ -15,3 +16,6 @@ Route::apiResource('testimonials', TestimonialsController::class);
 
 // Settings API
 Route::apiResource('settings', SettingController::class);
+
+// Faq API
+Route::apiResource('faqs', FaqController::class);
